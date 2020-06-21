@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.maxinhai.com.diarymybatis.mapper.UserMapper">
+
+    <!--<resultMap id="BaseResultMap" type="com.zst.vhr.model.Hr">-->
+        <!--<id column="id" property="id" jdbcType="INTEGER"/>-->
+        <!--<result column="name" property="name" jdbcType="VARCHAR"/>-->
+        <!--<result column="username" property="username" jdbcType="VARCHAR"/>-->
+        <!--<result column="password" property="password" jdbcType="VARCHAR"/>-->
+        <!--<result column="createTime" property="createTime" jdbcType="DATE"/>-->
+        <!--<result column="modifyTime" property="modifyTime" jdbcType="DATE"/>-->
+    <!--</resultMap>-->
+
+    <!--<select id="getAllUser" resultType="org.sang.mybatis.model.User">-->
+        <!--select * from t_user;-->
+    <!--</select>-->
+    <insert id="addUser" parameterType="www.maxinhai.com.diarymybatis.entity.User">
+        insert into user (username,address) values (#{username},#{address});
+    </insert>
+    <update id="updateUserById" parameterType="www.maxinhai.com.diarymybatis.entity.User">
+        update user set username=#{username},address=#{address} where id=#{id}
+    </update>
+    <delete id="deleteUserById">
+        delete from user where id=#{id}
+    </delete>
+</mapper>
