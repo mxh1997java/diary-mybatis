@@ -1,5 +1,7 @@
 package www.maxinhai.com.diarymybatis.config.Intercept;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -8,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
+
+    private final static Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
 
     /**
      * 在请求之前调用（Controller方法调用之前）
@@ -19,6 +23,10 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        logger.info("调用方式:{}， 调用路径:{}, 接口参数:{}", request.getMethod(), request.getRequestURI(), request.getParameterMap().toString());
+        if("/user/getAllUser".equals(request.getRequestURI())) {
+            return true;
+        }
         return false;
     }
 
