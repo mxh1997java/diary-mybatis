@@ -7,6 +7,9 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * AOP切换数据源
+ */
 public class DynamicDataSourceAspect {
 
     private static final Logger logger = LoggerFactory.getLogger(DynamicDataSourceAspect.class);
