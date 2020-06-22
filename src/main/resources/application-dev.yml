@@ -2,6 +2,18 @@ server:
   port: 8529
 
 spring:
+  redis:
+    database: 0
+    host: 122.51.248.77
+    port: 6379
+    password:
+    timeout: 10000
+    lettuce:
+      pool:
+        max-active: 8   #连接池的最大数据库连接数。
+        max-idle: 300  #最大空闲数
+        max-wait: 5000 #最大建立连接等待时间。如果超过此时间将接到异常
+        min-idle: 0  # 连接池中的最小空闲连接
   devtools:
     restart:
       enabled: true  #设置开启热部署

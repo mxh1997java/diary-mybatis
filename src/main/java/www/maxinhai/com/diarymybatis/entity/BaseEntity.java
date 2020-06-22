@@ -2,12 +2,18 @@ package www.maxinhai.com.diarymybatis.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 基类
  */
-public abstract class BaseEntity {
+public abstract class BaseEntity implements Serializable {
+
+    @Setter
+    @Getter
+    protected static final long serialVersionUID = 1L;
 
     @Setter
     @Getter
