@@ -39,6 +39,7 @@
         <!--select * from t_user;-->
     <!--</select>-->
 
+    <!--useGeneratedKeys="true"使用自增主键 keyProperty="user_id"确定主键key-->
     <insert id="addUser" parameterType="www.maxinhai.com.diarymybatis.entity.User" useGeneratedKeys="true" keyProperty="user_id">
         insert into diary_user (username,password) values (#{username},#{password});
     </insert>
