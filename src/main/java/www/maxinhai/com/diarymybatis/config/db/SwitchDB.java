@@ -88,22 +88,19 @@ public class SwitchDB {
 
     /**
      * 创建私有库数据源，并将数据源赋值到targetDataSources中，供后切库用
-     * @param ljyunId
+     * @param dbId
      * @return
      */
-    private DruidDataSource createLjyunDataSource(int ljyunId){
+    private DruidDataSource createLjyunDataSource(int dbId){
         //创建新的数据源
-        if(ljyunId == 0)
+        if(dbId == 0)
         {
             log.info("动态创建私有库数据时，私有库主键丢失");
         }
-        String yunId = String.valueOf(ljyunId);
+        String yunId = String.valueOf(dbId);
         DruidDataSource dataSource = new DruidDataSource();
-        String prefix = "db.privateDB.";
-        String dbUrl = evn.getProperty( prefix + "url-base")
-                + evn.getProperty( prefix + "host") + ":"
-                + evn.getProperty( prefix + "port") + "/"
-                + evn.getProperty( prefix + "dbname").replace("{id}",yunId) + evn.getProperty( prefix + "url-other");
+        String prefix = "spring.datasources.private";
+        String dbUrl = evn.getProperty( prefix + "url");
         log.info("+++创建云平台私有库连接url = " + dbUrl);
         dataSource.setUrl(dbUrl);
         dataSource.setUsername(evn.getProperty( prefix + "username"));

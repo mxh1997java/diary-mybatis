@@ -81,7 +81,6 @@ public class DataSourceConfigurer {
         dynamicDataSource.setTargetDataSources(map);
         //设置默认数据源
         dynamicDataSource.setDefaultTargetDataSource(defaultDataSource);
-
         return dynamicDataSource;
     }
 
