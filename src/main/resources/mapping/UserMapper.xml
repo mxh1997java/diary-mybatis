@@ -39,16 +39,16 @@
         <!--select * from t_user;-->
     <!--</select>-->
 
-    <insert id="addUser" parameterType="www.maxinhai.com.diarymybatis.entity.User">
-        insert into user (username,address) values (#{username},#{address});
+    <insert id="addUser" parameterType="www.maxinhai.com.diarymybatis.entity.User" useGeneratedKeys="true" keyProperty="user_id">
+        insert into diary_user (username,password) values (#{username},#{password});
     </insert>
 
     <update id="updateUserById" parameterType="www.maxinhai.com.diarymybatis.entity.User">
-        update user set username=#{username},address=#{address} where id=#{id}
+        update diary_user set username=#{username},address=#{address} where id=#{id}
     </update>
 
     <delete id="deleteUserById">
-        delete from user where id=#{id}
+        delete from diary_user where id=#{id}
     </delete>
 
 </mapper>

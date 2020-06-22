@@ -27,6 +27,9 @@ public class LoginInterceptor implements HandlerInterceptor {
         if("/user/getAllUser".equals(request.getRequestURI())) {
             return true;
         }
+        if("/switchDB".equals(request.getRequestURI())) {
+            return true;
+        }
         return false;
     }
 

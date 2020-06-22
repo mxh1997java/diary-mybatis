@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 import www.maxinhai.com.diarymybatis.entity.User;
+
+import javax.jws.soap.SOAPBinding;
 import java.util.List;
 
 @Repository
@@ -25,4 +27,5 @@ public interface UserMapper {
     @Select("select * from diary_user")
     List<User> getAllUser();
 
+    int addUser(User user);
 }
