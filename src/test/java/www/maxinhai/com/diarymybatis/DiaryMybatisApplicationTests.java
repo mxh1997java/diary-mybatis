@@ -13,6 +13,9 @@ import www.maxinhai.com.diarymybatis.util.*;
 import javax.jws.soap.SOAPBinding;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -89,6 +92,60 @@ public class DiaryMybatisApplicationTests {
         Map<Object, Object> map1 = redisUtils.hmget("map");
         System.out.println("redis map" + map1);
 
+    }
+
+    /**
+     * 十万根线程自增count
+     */
+    @Test
+    public void incrCount() {
+        CountDownLatch countDownLatch = new CountDownLatch(100000);
+        ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+        ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
+        ExecutorService threadPool = ThreadPoolUtils.getThreadPool();
+        redisUtils.setRedisTemplate(redisTemplate);
+        redisUtils.set("count", 0);
+        for(int i=0; i<100000; i++) {
+            threadPool.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        countDownLatch.await();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    writeLock.lock();
+                    try {
+                        Object value = redisTemplate.opsForValue().get("count");
+                        long count = Long.valueOf(String.valueOf(value));
+                        count++;
+                        redisTemplate.opsForValue().set("count", count);
+                        //redisUtils.set("count", count);
+                        System.out.println(Thread.currentThread().getName() + " 运算count结果: " + redisUtils.get("count"));
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    } finally {
+                        writeLock.unlock();
+                    }
+                }
+            });
+            countDownLatch.countDown();
+        }
+
+        String str = String.valueOf(redisTemplate.opsForValue().get("count"));
+        while (!str.equals("100000")) {
+            str = String.valueOf(redisTemplate.opsForValue().get("count"));
+        }
+    }
+
+
+    @Test
+    public void zsetTest() {
+        Set<String> set = new LinkedHashSet<>();
+        set.add("maxinhai");
+        set.add("maxinhai2");
+        set.add("maxinhai1");
+        redisTemplate.opsForZSet().add("zset", set, 1);
     }
 
 }
