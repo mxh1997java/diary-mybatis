@@ -5,6 +5,7 @@ package www.maxinhai.com.diarymybatis.util;
  * @param <T>
  */
 public class ResponseData<T> extends BaseResponse {
+
     private T data;
 
     private ResponseData() {}

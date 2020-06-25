@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.maxinhai.com.diarymybatis.mapper.LoginInfoMapper">
+
+    <!--自增id-->
+    <insert id="addLoginInfo" parameterType="www.maxinhai.com.diarymybatis.entity.LoginInfo"
+            useGeneratedKeys="true" keyProperty="id"
+    >
+        insert into diary_logininfo (user_id, name, createTime, description)
+        values (#{user_id}, #{name}, #{createTime}, #{description})
+    </insert>
+
+
+    <!--根据条件查询用户登录记录-->
+    <select id="findAllByCondition" parameterType="java.util.Map" resultType="www.maxinhai.com.diarymybatis.entity.LoginInfo">
+        select * from diary_logininfo where 0>1
+        <if test="user_id != null">
+            and user_id=#{user_id}
+        </if>
+        <if test="beginTime != null">
+            and createTime > DATE_FORMAT(#{beginTime}, '%Y-%m-%d')
+        </if>
+        <if test="endTime != null">
+            and DATE_FORMAT(#{endTime}, '%Y-%m-%d') > createTime
+        </if>
+    </select>
+
+
+</mapper>

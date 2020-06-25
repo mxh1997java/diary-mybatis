@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import www.maxinhai.com.diarymybatis.entity.Diary;
 import www.maxinhai.com.diarymybatis.entity.User;
 import www.maxinhai.com.diarymybatis.mapper.DiaryMapper;
+import www.maxinhai.com.diarymybatis.mapper.LoginInfoMapper;
 import www.maxinhai.com.diarymybatis.mapper.UserMapper;
 import www.maxinhai.com.diarymybatis.util.AssertUtils;
 import www.maxinhai.com.diarymybatis.util.EmptyUtils;
@@ -16,6 +17,9 @@ public abstract class AbstractService {
     @Autowired
     protected DiaryMapper diaryMapper;
 
+    @Autowired
+    protected LoginInfoMapper loginInfoMapper;
+
     /**
      * 根据id查询用户信息
      * @param id
@@ -26,7 +30,7 @@ public abstract class AbstractService {
         AssertUtils.assertTrue(EmptyUtils.isEmpty(id), "缺少必要参数!");
         User user = new User();
         user.setUser_id(id);
-        User selectResult = userMapper.selectOneByCondition(user);
+        User selectResult = userMapper.findOneByCondition(user);
         AssertUtils.assertTrue(EmptyUtils.isEmpty(selectResult), "数据不存在!");
         return selectResult;
     }

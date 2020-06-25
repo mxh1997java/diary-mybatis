@@ -1,5 +1,6 @@
 package www.maxinhai.com.diarymybatis.controller;
 
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import www.maxinhai.com.diarymybatis.config.db.DynamicDataSource;
@@ -15,6 +17,8 @@ import www.maxinhai.com.diarymybatis.config.db.SwitchDB;
 import www.maxinhai.com.diarymybatis.entity.User;
 import java.util.Map;
 
+@Api(tags = "数据库管理接口文档")
+@RequestMapping(value = "db")
 @RestController
 public class DBController extends AbstractController {
 

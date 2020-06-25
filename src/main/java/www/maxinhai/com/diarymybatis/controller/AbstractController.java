@@ -1,9 +1,12 @@
 package www.maxinhai.com.diarymybatis.controller;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import www.maxinhai.com.diarymybatis.mapper.UserMapper;
 import www.maxinhai.com.diarymybatis.service.Impl.DiaryServiceImpl;
+import www.maxinhai.com.diarymybatis.service.Impl.LoginInfoServiceImpl;
 import www.maxinhai.com.diarymybatis.service.Impl.UserServiceImpl;
+import www.maxinhai.com.diarymybatis.service.LoginInfoServce;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +21,9 @@ public abstract class AbstractController {
 
     @Autowired
     protected DiaryServiceImpl diaryService;
+
+    @Autowired
+    protected LoginInfoServiceImpl loginInfoService;
 
     /**
      * 获取成功响应

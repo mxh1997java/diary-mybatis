@@ -57,9 +57,9 @@ public class EmptyUtils {
      * @param collection 需要进行判断的集合
      * @return 为空(true), 不为空(false)
      */
-    public static boolean isEmpty(Collection<?> collection) {
-        return null == collection || collection.size() == 0;
-    }
+//    public static boolean isEmpty(Collection<?> collection) {
+//        return null == collection || collection.size() == 0;
+//    }
 
     /**
      * 判断List是否为空

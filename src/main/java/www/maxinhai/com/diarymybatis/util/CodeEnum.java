@@ -9,8 +9,9 @@ public enum CodeEnum {
     //public static final CodeEnum SUCCESS = new CodeEnum(0, "成功!");
     //public static final CodeEnum FAIL = new CodeEnum(1, "失败，未知错误!");
 
-    SUCCESS(0, "成功!"),
-    FAIL(1, "失败，未知错误!");
+    SUCCESS(200, "成功!"),
+    NOT_FOUND(404, "未找到该资源!"),
+    FAIL(500, "服务器内部错误!");
 
     /**
      * 响应状态码

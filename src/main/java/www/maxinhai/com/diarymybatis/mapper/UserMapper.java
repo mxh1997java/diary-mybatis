@@ -21,7 +21,7 @@ public interface UserMapper {
             @Result(column = "password",property = "password")
     })
     @Select("select * from diary_user")
-    List<User> getAllUser();
+    List<User> findAllUser();
 
     int addUser(User user);
 
@@ -30,7 +30,7 @@ public interface UserMapper {
      * @param user
      * @return
      */
-    User selectOneByCondition(User user);
+    User findOneByCondition(User user);
 
 
     /**

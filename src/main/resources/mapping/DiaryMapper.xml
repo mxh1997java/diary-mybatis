@@ -35,7 +35,9 @@
 
     <!--查询用户的全部日记-->
     <!--可以通过设置useCache来规定这个sql是否开启缓存，ture是开启，false是关闭-->
-    <select id="getAllDiary" resultType="www.maxinhai.com.diarymybatis.entity.Diary" useCache="true">
+    <select id="findAllByCondition"
+            parameterType="java.util.Map"
+            resultType="www.maxinhai.com.diarymybatis.entity.Diary" useCache="true">
         select * from diary_diary where 1 != 1
         <where>
             <if test="author_id != null">
@@ -50,6 +52,22 @@
     <!--根据日记id查询出一条数据-->
     <select id="findOneDiaryById" resultType="www.maxinhai.com.diarymybatis.entity.Diary">
         select * from diary_diary where id=#{id}
+    </select>
+    
+    <select id="findOneByCondition" parameterType="java.util.Map" resultType="www.maxinhai.com.diarymybatis.entity.Diary">
+        select * from diary_diary where 0>1
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="title != null">
+            and title = #{title}
+        </if>
+        <if test="author_id != null">
+            and author_id = #{author_id}
+        </if>
+        <if test="author != null">
+            and author = #{author}
+        </if>
     </select>
 
     <!--添加日记信息-->
