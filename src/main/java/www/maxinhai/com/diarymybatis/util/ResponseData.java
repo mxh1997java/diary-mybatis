@@ -9,7 +9,7 @@ public class ResponseData<T> extends BaseResponse {
 
     private ResponseData() {}
 
-    private ResponseData(CodeEnum code, T data) {
+    public ResponseData(CodeEnum code, T data) {
         super(code);
         this.data = data;
     }

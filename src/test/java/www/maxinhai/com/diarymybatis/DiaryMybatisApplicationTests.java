@@ -9,8 +9,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import www.maxinhai.com.diarymybatis.entity.User;
 import www.maxinhai.com.diarymybatis.util.*;
-
-import javax.jws.soap.SOAPBinding;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
@@ -41,6 +39,10 @@ public class DiaryMybatisApplicationTests {
 
     }
 
+
+    /**
+     * 统一返回封装测试
+     */
     @Test
     public void ResponseTest() {
         BaseResponse out = BaseResponse.out(CodeEnum.SUCCESS);

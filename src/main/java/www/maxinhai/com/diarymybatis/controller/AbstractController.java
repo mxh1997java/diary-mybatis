@@ -2,6 +2,8 @@ package www.maxinhai.com.diarymybatis.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import www.maxinhai.com.diarymybatis.mapper.UserMapper;
+import www.maxinhai.com.diarymybatis.service.Impl.DiaryServiceImpl;
+import www.maxinhai.com.diarymybatis.service.Impl.UserServiceImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +12,12 @@ public abstract class AbstractController {
 
     @Autowired
     protected UserMapper userMapper;
+
+    @Autowired
+    protected UserServiceImpl userService;
+
+    @Autowired
+    protected DiaryServiceImpl diaryService;
 
     /**
      * 获取成功响应

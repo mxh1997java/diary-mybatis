@@ -1,5 +1,6 @@
 package www.maxinhai.com.diarymybatis.config.Intercept;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -12,7 +13,7 @@ public class LoginConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //注册TestInterceptor拦截器
-        InterceptorRegistration registration = registry.addInterceptor(new LoginInterceptor());
+        InterceptorRegistration registration = registry.addInterceptor(getLoginInterceptor());
         registration.addPathPatterns("/**");                      //所有路径都被拦截
         registration.excludePathPatterns(                         //添加不拦截路径
                 "/user/login.htm",            //登录
@@ -36,4 +37,14 @@ public class LoginConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
     }
+
+    /**
+     * 解决RedisTemplate和RedisUtils注入为null的问题
+     * @return
+     */
+    @Bean
+    public LoginInterceptor getLoginInterceptor() {
+        return new LoginInterceptor();
+    }
+
 }

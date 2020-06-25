@@ -14,7 +14,7 @@ public class BaseResponse {
      */
     private String msg;
     protected BaseResponse() {}
-    protected BaseResponse(CodeEnum code) {
+    BaseResponse(CodeEnum code) {
         this.code = code.getCode();
         this.msg = code.getMsg();
     }
