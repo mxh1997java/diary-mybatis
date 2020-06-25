@@ -32,7 +32,7 @@ public interface UserService {
      * @return
      * @throws Exception
      */
-    List<User> findAllByCondition(Map<String, Object> params) throws Exception;
+    Map<String, Object> findAllByCondition(Map<String, Object> params) throws Exception;
 
     /**
      * 根据条件查询一条用户数据

@@ -6,7 +6,7 @@ import java.util.Map;
 
 public interface DiaryService {
 
-    List<Diary> findAllDiary(Map<String, Object> params) throws Exception;
+    Map<String, Object> findAllDiary(Map<String, Object> params) throws Exception;
 
     Diary findOneById(Long id) throws Exception;
 

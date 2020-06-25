@@ -32,8 +32,11 @@ public class UserController extends AbstractController {
     @ApiImplicitParam(dataType = "java.util.Map",name = "params",value = "params",required = true)
     @PostMapping(value = "findAllByCondition")
     public Map<String, Object> findAllByCondition(@RequestBody Map<String, Object> params) throws Exception {
-        List<User> allUser = userMapper.findAllByCondition(params);
-        return getSuccess(allUser);
+        Map<String, Object> result = userService.findAllByCondition(params);
+        if(EmptyUtils.isEmpty(result)) {
+            return getFailure();
+        }
+        return result;
     }
 
     @ApiOperation(value = "用户注册接口", notes = "registered", httpMethod = "POST")

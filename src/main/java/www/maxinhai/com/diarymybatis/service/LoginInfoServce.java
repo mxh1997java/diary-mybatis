@@ -11,7 +11,7 @@ public interface LoginInfoServce {
     int addLoginInfo(LoginInfo info);
 
 
-    List<LoginInfo> findAllByCondition(Map<String, Object> params);
+    Map<String, Object> findAllByCondition(Map<String, Object> params) throws Exception;
 
 
 }

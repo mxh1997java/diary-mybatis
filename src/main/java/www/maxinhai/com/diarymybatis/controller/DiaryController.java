@@ -9,7 +9,6 @@ import www.maxinhai.com.diarymybatis.util.BaseResponse;
 import www.maxinhai.com.diarymybatis.util.CodeEnum;
 import www.maxinhai.com.diarymybatis.util.EmptyUtils;
 import www.maxinhai.com.diarymybatis.util.ResponseData;
-import java.util.List;
 import java.util.Map;
 
 @Api(tags = "日记管理接口文档")
@@ -21,12 +20,12 @@ public class DiaryController extends AbstractController {
     @ApiOperation(value = "根据条件获取日记信息集合", notes = "findAllDiary", httpMethod = "POST")
     @ApiImplicitParam(dataType = "java.util.Map",name = "params",value = "params",required = true)
     @PostMapping(value = "findAllDiary")
-    public BaseResponse findAllDiary(@RequestBody Map<String, Object> params) throws Exception {
-        List<Diary> diaryList = diaryService.findAllDiary(params);
-        if(EmptyUtils.isEmpty(diaryList)) {
-            return ResponseData.out(CodeEnum.FAIL, null);
+    public Map<String, Object> findAllDiary(@RequestBody Map<String, Object> params) throws Exception {
+        Map<String, Object> result = diaryService.findAllDiary(params);
+        if(EmptyUtils.isEmpty(result)) {
+            return getFailure();
         }
-        return ResponseData.out(CodeEnum.SUCCESS, diaryList);
+        return result;
     }
 
 

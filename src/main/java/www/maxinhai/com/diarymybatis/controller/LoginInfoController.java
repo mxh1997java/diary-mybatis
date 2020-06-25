@@ -24,12 +24,12 @@ public class LoginInfoController extends AbstractController {
     @ApiOperation(value = "根据条件获取日记信息集合", notes = "findAllByCondition", httpMethod = "POST")
     @ApiImplicitParam(dataType = "java.util.Map",name = "params",value = "params",required = true)
     @PostMapping(value = "findAllByCondition")
-    public BaseResponse findAllByCondition(@RequestBody Map<String, Object> params) throws Exception {
-        List<LoginInfo> loginInfoList = loginInfoService.findAllByCondition(params);
-        if(EmptyUtils.isEmpty(loginInfoList)) {
-            return ResponseData.out(CodeEnum.FAIL, null);
+    public Map<String, Object> findAllByCondition(@RequestBody Map<String, Object> params) throws Exception {
+        Map<String, Object> result = loginInfoService.findAllByCondition(params);
+        if(EmptyUtils.isEmpty(result)) {
+            return getFailure();
         }
-        return ResponseData.out(CodeEnum.SUCCESS, loginInfoList);
+        return result;
     }
 
 }

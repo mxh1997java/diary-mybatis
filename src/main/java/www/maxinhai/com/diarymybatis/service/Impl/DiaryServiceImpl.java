@@ -1,7 +1,10 @@
 package www.maxinhai.com.diarymybatis.service.Impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import www.maxinhai.com.diarymybatis.entity.Diary;
+import www.maxinhai.com.diarymybatis.entity.LoginInfo;
 import www.maxinhai.com.diarymybatis.service.AbstractService;
 import www.maxinhai.com.diarymybatis.service.DiaryService;
 import www.maxinhai.com.diarymybatis.util.AssertUtils;
@@ -15,9 +18,27 @@ import java.util.Map;
 public class DiaryServiceImpl extends AbstractService implements DiaryService {
 
     @Override
-    public List<Diary> findAllDiary(Map<String, Object> params) throws Exception {
+    public Map<String, Object> findAllDiary(Map<String, Object> params) throws Exception {
         AssertUtils.assertTrue(EmptyUtils.isEmpty(params), "缺少必要参数!");
-        return diaryMapper.findAllByCondition(params);
+        AssertUtils.assertTrue(EmptyUtils.isEmpty(params.get("pageNum")), "pageNum不为空!");
+        AssertUtils.assertTrue(EmptyUtils.isEmpty(params.get("pageSize")), "pageSize不为空!");
+        Integer pageNum = Integer.valueOf(String.valueOf(params.get("pageNum")));
+        Integer pageSize = Integer.valueOf(String.valueOf(params.get("pageSize")));
+        if(pageNum == null || pageNum == 0) {
+            pageNum = 1;
+        }
+        if(pageSize == null || pageSize == 0) {
+            pageSize = 10;
+        }
+        PageHelper.startPage(pageNum, pageSize);
+        List<Diary> diaryList = diaryMapper.findAllByCondition(params);
+        PageInfo<Diary> pageInfo = new PageInfo<>(diaryList);
+        Map<String, Object> result = new HashMap<>();
+        result.put("message", "success");
+        result.put("code", 200);
+        result.put("data", pageInfo.getList());
+        result.put("total", pageInfo.getTotal());
+        return result;
     }
 
     @Override
