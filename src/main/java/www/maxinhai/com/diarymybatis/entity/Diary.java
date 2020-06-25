@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class Diary extends BaseEntity {
 
-    private String title;
+    private Long id;
 
-    private String tag;
+    private String title;
 
     private String content;
 

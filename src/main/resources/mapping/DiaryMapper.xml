@@ -62,9 +62,6 @@
             <if test="title != null">
                 title,
             </if>
-            <if test="tag != null">
-                tag,
-            </if>
             <if test="content != null">
                 content,
             </if>
@@ -91,9 +88,6 @@
             <if test="title != null">
                 #{title,jdbcType=VARCHAR},
             </if>
-            <if test="tag != null">
-                #{tag,jdbcType=VARCHAR},
-            </if>
             <if test="content != null">
                 #{content,jdbcType=VARCHAR},
             </if>
@@ -118,9 +112,6 @@
         <set>
             <if test="title != null">
                 name = #{title,jdbcType=VARCHAR},
-            </if>
-            <if test="tag != null">
-                tag = #{tag,jdbcType=CHAR},
             </if>
             <if test="content != null">
                 content = #{content,jdbcType=VARCHAR},
@@ -157,7 +148,6 @@
             (
             #{diary.id},
             #{diary.title},
-            #{diary.tag},
             #{diary.content},
             #{diary.author_id},
             #{diary.author},

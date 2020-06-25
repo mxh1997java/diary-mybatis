@@ -26,7 +26,7 @@
 
     <!--结果映射-->
     <resultMap id="BaseResultMap" type="www.maxinhai.com.diarymybatis.entity.User">
-        <id column="id" property="id" jdbcType="INTEGER"/>
+        <id column="user_id" property="user_id" jdbcType="INTEGER"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="username" property="username" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
@@ -39,17 +39,61 @@
         <!--select * from t_user;-->
     <!--</select>-->
 
+    <!--根据id或username查询一个用户信息-->
+    <select id="selectOneByCondition"
+            resultType="www.maxinhai.com.diarymybatis.entity.User"
+            parameterType="www.maxinhai.com.diarymybatis.entity.User" useCache="true">
+        select * from diary_user where 0>1
+        <if test="user_id != null" >
+            and user_id=#{user_id}
+        </if>
+        <if test="username != null" >
+            and username=#{username}
+        </if>
+        <if test="password != null" >
+            and password=#{password}
+        </if>
+    </select>
+    
+    <select id="findAllByCondition"
+            parameterType="java.util.Map"
+            resultType="www.maxinhai.com.diarymybatis.entity.User">
+        select * from diary_user where 0>1
+        <if test="username != null" >
+            and username like #{username}
+        </if>
+        <if test="description != null" >
+            and description like #{description}
+        </if>
+        <if test="beginTime != null">
+            and createTime > DATE_FORMAT(#{beginTime}, '%Y-%m-%d')
+        </if>
+        <if test="endTime != null">
+            and DATE_FORMAT(#{endTime}, '%Y-%m-%d') > createTime
+        </if>
+    </select>
+
     <!--useGeneratedKeys="true"使用自增主键 keyProperty="user_id"确定主键key-->
-    <insert id="addUser" parameterType="www.maxinhai.com.diarymybatis.entity.User" useGeneratedKeys="true" keyProperty="user_id">
+    <insert id="addUser" parameterType="www.maxinhai.com.diarymybatis.entity.User"
+            useGeneratedKeys="true" keyProperty="user_id">
         insert into diary_user (username,password) values (#{username},#{password});
     </insert>
 
     <update id="updateUserById" parameterType="www.maxinhai.com.diarymybatis.entity.User">
-        update diary_user set username=#{username},address=#{address} where id=#{id}
+        update diary_user
+        <set>
+            <if test="username != null">
+                username=#{username},
+            </if>
+            <if test="password != null">
+                password=#{password},
+            </if>
+        </set>
+        where user_id=#{user_id}
     </update>
 
     <delete id="deleteUserById">
-        delete from diary_user where id=#{id}
+        delete from diary_user where user_id=#{user_id}
     </delete>
 
 </mapper>
