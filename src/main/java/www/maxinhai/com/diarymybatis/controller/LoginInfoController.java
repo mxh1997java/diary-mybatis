@@ -11,7 +11,7 @@ import www.maxinhai.com.diarymybatis.util.EmptyUtils;
 import java.util.Map;
 
 @Api(tags = "用户登录日志管理接口")
-@RequestMapping("loginInfo")
+@RequestMapping("api/loginInfo/")
 @RestController
 public class LoginInfoController extends AbstractController {
 

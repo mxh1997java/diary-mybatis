@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @Api(tags = "用户管理相关接口", value = "用户管理相关接口")
-@RequestMapping(value = "user")
+@RequestMapping(value = "api/user/")
 @RestController
 public class UserController extends AbstractController {
 

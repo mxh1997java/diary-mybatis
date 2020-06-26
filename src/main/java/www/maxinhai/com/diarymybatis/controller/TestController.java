@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @Api(tags = "测试接口")
-@RequestMapping("test")
+@RequestMapping("api/test/")
 @RestController
 public class TestController extends AbstractController{
 

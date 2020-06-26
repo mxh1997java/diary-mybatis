@@ -4,6 +4,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="www.maxinhai.com.diarymybatis.mapper.LoginInfoMapper">
 
+    <!--映射结果-->
+    <resultMap id="BaseResultMap" type="www.maxinhai.com.diarymybatis.entity.LoginInfo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="user_id" jdbcType="INTEGER"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="DATE"/>
+        <result column="modifyTime" property="modifyTime" jdbcType="DATE"/>
+    </resultMap>
+
+    <!--共用查询字段-->
+    <sql id="BaseColumnList">
+        id,
+        user_id,
+        description,
+        createTime,
+        modifyTime
+    </sql>
+
     <!--自增id-->
     <insert id="addLoginInfo" parameterType="www.maxinhai.com.diarymybatis.entity.LoginInfo"
             useGeneratedKeys="true" keyProperty="id"
@@ -15,7 +33,9 @@
 
     <!--根据条件查询用户登录记录-->
     <select id="findAllByCondition" parameterType="java.util.Map" resultType="www.maxinhai.com.diarymybatis.entity.LoginInfo">
-        select * from diary_logininfo where 0>1
+        select
+        <include refid="BaseColumnList"></include>
+        from diary_logininfo where 0>1
         <if test="user_id != null">
             and user_id=#{user_id}
         </if>

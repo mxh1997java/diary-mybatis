@@ -27,12 +27,20 @@
     <!--结果映射-->
     <resultMap id="BaseResultMap" type="www.maxinhai.com.diarymybatis.entity.User">
         <id column="user_id" property="user_id" jdbcType="INTEGER"/>
-        <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="username" property="username" jdbcType="VARCHAR"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="createTime" property="createTime" jdbcType="DATE"/>
         <result column="modifyTime" property="modifyTime" jdbcType="DATE"/>
     </resultMap>
+
+    <!--共用查询字段-->
+    <sql id="BaseColumnList">
+        user_id,
+        username,
+        password,
+        createTime,
+        modifyTime
+    </sql>
 
     <!--可以通过设置useCache来规定这个sql是否开启缓存，ture是开启，false是关闭-->
     <!--<select id="getAllUser" resultType="www.maxinhai.com.diarymybatis.entity.User" useCache="true">-->
@@ -42,8 +50,11 @@
     <!--根据id或username查询一个用户信息-->
     <select id="findOneByCondition"
             resultType="www.maxinhai.com.diarymybatis.entity.User"
+            resultMap="BaseResultMap"
             parameterType="www.maxinhai.com.diarymybatis.entity.User" useCache="true">
-        select * from diary_user where 0>1
+        select
+        <include refid="BaseColumnList"></include>
+        from diary_user where 0>1
         <if test="user_id != null" >
             and user_id=#{user_id}
         </if>
@@ -57,8 +68,11 @@
     
     <select id="findAllByCondition"
             parameterType="java.util.Map"
-            resultType="www.maxinhai.com.diarymybatis.entity.User">
-        select * from diary_user where 0>1
+            resultType="www.maxinhai.com.diarymybatis.entity.User"
+    >
+        select
+        <include refid="BaseColumnList"></include>
+        from diary_user where 0>1
         <if test="username != null" >
             and username like #{username}
         </if>

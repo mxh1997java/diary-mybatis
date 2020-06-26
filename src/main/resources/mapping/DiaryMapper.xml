@@ -26,19 +26,33 @@
 
     <resultMap id="BaseResultMap" type="www.maxinhai.com.diarymybatis.entity.Diary">
         <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="name" property="name" jdbcType="VARCHAR"/>
-        <result column="username" property="username" jdbcType="VARCHAR"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="author_id" property="author_id" jdbcType="INTEGER"/>
+        <result column="author" property="author" jdbcType="VARCHAR"/>
         <result column="createTime" property="createTime" jdbcType="DATE"/>
         <result column="modifyTime" property="modifyTime" jdbcType="DATE"/>
     </resultMap>
+
+    <!--共用查询字段-->
+    <sql id="BaseColumnList">
+        id,
+        title,
+        content,
+        author_id,
+        author,
+        createTime,
+        modifyTime
+    </sql>
 
     <!--查询用户的全部日记-->
     <!--可以通过设置useCache来规定这个sql是否开启缓存，ture是开启，false是关闭-->
     <select id="findAllByCondition"
             parameterType="java.util.Map"
             resultType="www.maxinhai.com.diarymybatis.entity.Diary" useCache="true">
-        select * from diary_diary where 1 != 1
+        select
+        <include refid="BaseColumnList"></include>
+        from diary_diary where 1 != 1
         <where>
             <if test="author_id != null">
                 and author_id = #{author_id}
@@ -51,11 +65,15 @@
 
     <!--根据日记id查询出一条数据-->
     <select id="findOneDiaryById" resultType="www.maxinhai.com.diarymybatis.entity.Diary">
-        select * from diary_diary where id=#{id}
+        select
+        <include refid="BaseColumnList"></include>
+        from diary_diary where id=#{id}
     </select>
     
     <select id="findOneByCondition" parameterType="java.util.Map" resultType="www.maxinhai.com.diarymybatis.entity.Diary">
-        select * from diary_diary where 0>1
+        select
+        <include refid="BaseColumnList"></include>
+        from diary_diary where 0>1
         <if test="id != null">
             and id = #{id}
         </if>

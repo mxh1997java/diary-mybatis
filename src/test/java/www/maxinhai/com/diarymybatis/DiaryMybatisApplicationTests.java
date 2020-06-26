@@ -24,6 +24,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+
+/**
+ * 单元测试
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DiaryMybatisApplicationTests {

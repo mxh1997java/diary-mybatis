@@ -12,7 +12,7 @@ import www.maxinhai.com.diarymybatis.util.ResponseData;
 import java.util.Map;
 
 @Api(tags = "日记管理接口文档")
-@RequestMapping(value = "diary")
+@RequestMapping(value = "api/diary/")
 @RestController
 public class DiaryController extends AbstractController {
 

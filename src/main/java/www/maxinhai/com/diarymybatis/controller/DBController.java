@@ -18,7 +18,7 @@ import www.maxinhai.com.diarymybatis.entity.User;
 import java.util.Map;
 
 @Api(tags = "数据库管理接口文档")
-@RequestMapping(value = "db")
+@RequestMapping(value = "api/db/")
 @RestController
 public class DBController extends AbstractController {
 
