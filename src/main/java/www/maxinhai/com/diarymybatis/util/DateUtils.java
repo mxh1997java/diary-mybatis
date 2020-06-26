@@ -353,30 +353,30 @@ public class DateUtils {
         return firstDate.isBefore(secondDate);
     }
 
-    public static void main(String[] args) {
-        Date date = new Date();
-        LocalDateTime localDate = DateUtils.dateToLocalDateTime(date);
-        System.out.println(localDate);
-
-        String start = "2020-03-01 12:00:00";
-        String end = "2022-03-12 12:01:00";
-        long seconds = DateUtils.calculationSecond(start, end);
-        System.out.println("相差秒数: " + seconds);
-
-
-        long minutes = DateUtils.calculationMinutes(start, end);
-        System.out.println("相差分钟数: " + minutes);
-
-        long days = DateUtils.calculationDays(start, end);
-        System.out.println("相差天数: " + days);
-
-        LocalDateTime startTime = LocalDateTime.of(2000, 10, 13, 11, 11);
-        LocalDateTime endTime = LocalDateTime.of(2000, 10, 14, 13, 13);
-        long time = DateUtils.betweenTwoTime(startTime, endTime, ChronoUnit.SECONDS);
-        System.out.println(time);
-
-        date = DateUtils.calculationDate(date, Calendar.DATE, -10);
-        System.out.println("减去10天: " + DateUtils.getFormatDate(date));
-    }
+//    public static void main(String[] args) {
+//        Date date = new Date();
+//        LocalDateTime localDate = DateUtils.dateToLocalDateTime(date);
+//        System.out.println(localDate);
+//
+//        String start = "2020-03-01 12:00:00";
+//        String end = "2022-03-12 12:01:00";
+//        long seconds = DateUtils.calculationSecond(start, end);
+//        System.out.println("相差秒数: " + seconds);
+//
+//
+//        long minutes = DateUtils.calculationMinutes(start, end);
+//        System.out.println("相差分钟数: " + minutes);
+//
+//        long days = DateUtils.calculationDays(start, end);
+//        System.out.println("相差天数: " + days);
+//
+//        LocalDateTime startTime = LocalDateTime.of(2000, 10, 13, 11, 11);
+//        LocalDateTime endTime = LocalDateTime.of(2000, 10, 14, 13, 13);
+//        long time = DateUtils.betweenTwoTime(startTime, endTime, ChronoUnit.SECONDS);
+//        System.out.println(time);
+//
+//        date = DateUtils.calculationDate(date, Calendar.DATE, -10);
+//        System.out.println("减去10天: " + DateUtils.getFormatDate(date));
+//    }
 
 }

@@ -35,3 +35,6 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
+
+redis_user_key:
+  USER_SESSION_KEY

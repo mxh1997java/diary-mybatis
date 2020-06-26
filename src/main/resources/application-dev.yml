@@ -83,3 +83,6 @@ logging:
     com:
       example:
         mapper : debug
+
+redis_user_key:
+  USER_SESSION_KEY

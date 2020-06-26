@@ -2,10 +2,13 @@ package www.maxinhai.com.diarymybatis.config.Intercept;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import www.maxinhai.com.diarymybatis.config.annotation.LoginRequired;
 import www.maxinhai.com.diarymybatis.util.AssertUtils;
 import www.maxinhai.com.diarymybatis.util.EmptyUtils;
 import www.maxinhai.com.diarymybatis.util.RedisUtils;
@@ -17,6 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginInterceptor implements HandlerInterceptor {
 
     private final static Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
+
+    @Value("${redis_user_key}")
+    String redis_user_key;
 
     /**
      * 这里会出现redisTemplate为null的情况，
@@ -43,13 +49,34 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         logger.info("调用方式:{}， 调用路径:{}, 接口参数:{}", request.getMethod(), request.getRequestURI(), request.getParameterMap().toString());
+
+        if(!(handler instanceof HandlerMethod)) {
+            logger.warn("当前操作handler不为HandlerMethod=" + handler.getClass().getName() + ",request=" + request.getQueryString());
+            return true;
+        }
+
+        //获取请求上的登陆注解
+        HandlerMethod handlerMethod = (HandlerMethod) handler;
+        LoginRequired annotation = handlerMethod.getMethod().getAnnotation(LoginRequired.class);
+        if(null != annotation) {
+            //判断注解里的默认值
+            boolean required = annotation.loginRequired();
+            if(!required) {
+                logger.info("调用路径: {} 不需要登陆", request.getRequestURI());
+                return true;
+            }
+        } else {
+            logger.info("调用路径: {} 不需要登陆", request.getRequestURI());
+            return true;
+        }
+
         if("/user/registered".equals(request.getRequestURI()) || "/user/login".equals(request.getRequestURI())) {
             return true;
         } else {
             AssertUtils.assertTrue(EmptyUtils.isEmpty(request.getHeader("token")), "token不存在!");
             String token = request.getHeader("token");
             redisUtils.setRedisTemplate(redisTemplate);
-            Object userInfo = redisUtils.get("USER_SESSION_KEY:" + token);
+            Object userInfo = redisUtils.get(redis_user_key + ":" + token);
             if(EmptyUtils.isEmpty(userInfo)) {
                 logger.info("登录信息不存在!请重新登录!");
                 return false;

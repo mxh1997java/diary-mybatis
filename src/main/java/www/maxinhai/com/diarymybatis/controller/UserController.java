@@ -1,11 +1,13 @@
 package www.maxinhai.com.diarymybatis.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import io.lettuce.core.dynamic.annotation.Param;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,9 @@ import java.util.*;
 @RequestMapping(value = "user")
 @RestController
 public class UserController extends AbstractController {
+
+    @Value("${redis_user_key}")
+    private String redis_user_key;
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
@@ -70,21 +75,45 @@ public class UserController extends AbstractController {
         params.put("password", password);
         User user = userService.findOneByCondition(params);
         AssertUtils.assertTrue(EmptyUtils.isEmpty(user), "账户不存在!");
+        //添加session会话
         String token = UUID.randomUUID().toString();
         redisUtils.setRedisTemplate(redisTemplate);
-        redisUtils.set("USER_SESSION_KEY:" + token, user);
+        redisUtils.set(redis_user_key + ":" + token, user);
         redisUtils.expire("USER_SESSION_KEY:" + token, 60 * 60);
+        //添加登录信息
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setUser_id(user.getUser_id());
         Date nowTime = new Date();
         loginInfo.setCreateTime(nowTime);
         loginInfo.setDescription(user.getUsername() + "于" + DateUtils.getFormatDateTime(nowTime) + "登陆账户!");
         loginInfoService.addLoginInfo(loginInfo);
-        Cookie cookie = new Cookie("token", token);
-        response.addCookie(cookie);
+        //添加客户端cookie
+        CookieUtils.setCookie(request, response, "token", token);
+        CookieUtils.setCookie(request, response, "userinfo", JSONObject.toJSONString(user));
         ResponseData<Object> responseData = ResponseData.out(CodeEnum.SUCCESS, null);
         return responseData;
     }
+
+
+
+    @ApiOperation(value = "用户退出登录", notes = "loginOut", httpMethod = "POST")
+    @ApiImplicitParams({
+            @ApiImplicitParam(dataType = "HttpServletRequest",name = "request", value = "request",required = true),
+            @ApiImplicitParam(dataType = "HttpServletResponse",name = "response", value = "response",required = true)
+    })
+    @PostMapping(value = "loginOut")
+    public BaseResponse loginOut(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        //删除redis会话
+        String token = request.getHeader("token");
+        redisUtils.setRedisTemplate(redisTemplate);
+        redisUtils.del(redis_user_key + ":" + token);
+        //清除客户端cookie
+        CookieUtils.deleteCookie(request, response, "token");
+        CookieUtils.deleteCookie(request, response, "userinfo");
+        return ResponseData.out(CodeEnum.SUCCESS, null);
+    }
+
+
 
 
     @ApiOperation(value = "删除用户信息", notes = "removeUser", httpMethod = "POST")

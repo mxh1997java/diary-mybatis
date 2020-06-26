@@ -7,12 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import www.maxinhai.com.diarymybatis.entity.LoginInfo;
-import www.maxinhai.com.diarymybatis.util.BaseResponse;
-import www.maxinhai.com.diarymybatis.util.CodeEnum;
 import www.maxinhai.com.diarymybatis.util.EmptyUtils;
-import www.maxinhai.com.diarymybatis.util.ResponseData;
-import java.util.List;
 import java.util.Map;
 
 @Api(tags = "用户登录日志管理接口")

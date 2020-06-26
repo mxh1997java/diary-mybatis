@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -277,6 +278,17 @@ public class DiaryMybatisApplicationTests {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    @Value("${redis_user_key}")
+    String redis_user_key;
+
+    /**
+     * 读取配置文件测试
+     */
+    @Test
+    public void readProperties() {
+        System.out.println(redis_user_key);
     }
 
 }
