@@ -65,7 +65,7 @@ public class BaseExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public ResultBody exceptionHandler(Exception e){
-        logger.info("发生其他异常! 原因是: {}", e);
+        logger.info("发生其他异常! 原因是: {}", e.getMessage());
         return new ResultBody("500", e.getMessage());
     }
 

@@ -22,9 +22,9 @@ public interface UserService {
 
     /**
      * 修改用户信息
-     * @param user
+     * @param params
      */
-    int modifyUser(User user) throws Exception;
+    int modifyUser(Map<String, Object> params) throws Exception;
 
     /**
      * 根据条件查询用户数据集合

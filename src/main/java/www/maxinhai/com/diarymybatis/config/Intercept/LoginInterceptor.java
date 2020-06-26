@@ -50,6 +50,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         logger.info("调用方式:{}， 调用路径:{}, 接口参数:{}", request.getMethod(), request.getRequestURI(), request.getParameterMap().toString());
 
+        //判断是否为ResourceHttpRequestHandler
         if(!(handler instanceof HandlerMethod)) {
             logger.warn("当前操作handler不为HandlerMethod=" + handler.getClass().getName() + ",request=" + request.getQueryString());
             return true;
@@ -70,17 +71,13 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        if("/user/registered".equals(request.getRequestURI()) || "/user/login".equals(request.getRequestURI())) {
-            return true;
-        } else {
-            AssertUtils.assertTrue(EmptyUtils.isEmpty(request.getHeader("token")), "token不存在!");
-            String token = request.getHeader("token");
-            redisUtils.setRedisTemplate(redisTemplate);
-            Object userInfo = redisUtils.get(redis_user_key + ":" + token);
-            if(EmptyUtils.isEmpty(userInfo)) {
-                logger.info("登录信息不存在!请重新登录!");
-                return false;
-            }
+        AssertUtils.assertTrue(EmptyUtils.isEmpty(request.getHeader("token")), "token不存在!");
+        String token = request.getHeader("token");
+        redisUtils.setRedisTemplate(redisTemplate);
+        Object userInfo = redisUtils.get(redis_user_key + ":" + token);
+        if(EmptyUtils.isEmpty(userInfo)) {
+            logger.info("登录信息不存在!请重新登录!");
+            return false;
         }
         return false;
     }

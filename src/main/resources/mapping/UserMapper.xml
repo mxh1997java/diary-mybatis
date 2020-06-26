@@ -50,20 +50,21 @@
     <!--根据id或username查询一个用户信息-->
     <select id="findOneByCondition"
             resultType="www.maxinhai.com.diarymybatis.entity.User"
-            resultMap="BaseResultMap"
             parameterType="www.maxinhai.com.diarymybatis.entity.User" useCache="true">
         select
         <include refid="BaseColumnList"></include>
-        from diary_user where 0>1
-        <if test="user_id != null" >
-            and user_id=#{user_id}
-        </if>
-        <if test="username != null" >
-            and username=#{username}
-        </if>
-        <if test="password != null" >
-            and password=#{password}
-        </if>
+        from diary_user
+        <where>
+            <if test="user_id != null" >
+                and user_id=#{user_id}
+            </if>
+            <if test="username != null" >
+                and username=#{username}
+            </if>
+            <if test="password != null" >
+                and password=#{password}
+            </if>
+        </where>
     </select>
     
     <select id="findAllByCondition"
@@ -72,25 +73,28 @@
     >
         select
         <include refid="BaseColumnList"></include>
-        from diary_user where 0>1
-        <if test="username != null" >
-            and username like #{username}
-        </if>
-        <if test="description != null" >
-            and description like #{description}
-        </if>
-        <if test="beginTime != null">
-            and createTime > DATE_FORMAT(#{beginTime}, '%Y-%m-%d')
-        </if>
-        <if test="endTime != null">
-            and DATE_FORMAT(#{endTime}, '%Y-%m-%d') > createTime
-        </if>
+        from diary_user
+        <where>
+            <if test="username != null" >
+                and username like #{username}
+            </if>
+            <if test="description != null" >
+                and description like #{description}
+            </if>
+            <if test="beginTime != null">
+                and createTime > DATE_FORMAT(#{beginTime}, '%Y-%m-%d')
+            </if>
+            <if test="endTime != null">
+                and DATE_FORMAT(#{endTime}, '%Y-%m-%d') > createTime
+            </if>
+        </where>
     </select>
 
     <!--useGeneratedKeys="true"使用自增主键 keyProperty="user_id"确定主键key-->
     <insert id="addUser" parameterType="www.maxinhai.com.diarymybatis.entity.User"
             useGeneratedKeys="true" keyProperty="user_id">
-        insert into diary_user (username,password) values (#{username},#{password});
+        insert into diary_user (username,password,description,createTime)
+        values (#{username},#{password},#{description},#{createTime});
     </insert>
 
     <update id="updateUserById" parameterType="www.maxinhai.com.diarymybatis.entity.User">
@@ -101,6 +105,12 @@
             </if>
             <if test="password != null">
                 password=#{password},
+            </if>
+            <if test="description != null">
+                description=#{description},
+            </if>
+            <if test="modifyTime != null">
+                modifyTime=#{modifyTime},
             </if>
         </set>
         where user_id=#{user_id}

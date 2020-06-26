@@ -55,7 +55,7 @@ public class DiaryServiceImpl extends AbstractService implements DiaryService {
         params.put("author", diary.getAuthor());
         params.put("author_id", diary.getAuthor_id());
         Diary findResult = diaryMapper.findOneByCondition(params);
-        AssertUtils.assertTrue(EmptyUtils.isEmpty(findResult), "标题已存在!");
+        AssertUtils.assertFalse(EmptyUtils.isEmpty(findResult), "标题已存在!");
         diary.setCreateTime(new Date());
         return diaryMapper.addDiary(diary);
     }

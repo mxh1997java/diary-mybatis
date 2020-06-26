@@ -26,8 +26,8 @@
     <insert id="addLoginInfo" parameterType="www.maxinhai.com.diarymybatis.entity.LoginInfo"
             useGeneratedKeys="true" keyProperty="id"
     >
-        insert into diary_logininfo (user_id, name, createTime, description)
-        values (#{user_id}, #{name}, #{createTime}, #{description})
+        insert into diary_logininfo (user_id, createTime, description)
+        values (#{user_id}, #{createTime}, #{description})
     </insert>
 
 

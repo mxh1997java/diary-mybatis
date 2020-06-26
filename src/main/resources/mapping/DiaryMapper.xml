@@ -89,12 +89,11 @@
     </select>
 
     <!--添加日记信息-->
-    <insert id="addDiary" parameterType="www.maxinhai.com.diarymybatis.entity.Diary">
-        insert into diary_diray
+    <insert id="addDiary"
+            parameterType="www.maxinhai.com.diarymybatis.entity.Diary"
+            useGeneratedKeys="true" keyProperty="id" >
+        insert into diary_diary
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
             <if test="title != null">
                 title,
             </if>
@@ -118,9 +117,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
             <if test="title != null">
                 #{title,jdbcType=VARCHAR},
             </if>
@@ -129,6 +125,9 @@
             </if>
             <if test="author_id != null">
                 #{author_id,jdbcType=INTEGER},
+            </if>
+            <if test="author != null">
+                #{author,jdbcType=VARCHAR},
             </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=DATE},

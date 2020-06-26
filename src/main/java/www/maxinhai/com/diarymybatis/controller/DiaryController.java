@@ -58,8 +58,8 @@ public class DiaryController extends AbstractController {
 
     @ApiOperation(value = "删除日记信息", notes = "removeDiary", httpMethod = "POST")
     @ApiImplicitParam(dataType = "Long",name = "id",value = "id",required = true)
-    @PostMapping(value = "removeDiary")
-    public BaseResponse removeDiary(@RequestParam("id") Long id) throws Exception {
+    @PostMapping(value = "removeDiary/{id}")
+    public BaseResponse removeDiary(@PathVariable("id") Long id) throws Exception {
         int result = diaryService.deleteDiary(id);
         if(result == 1) {
             return ResponseData.out(CodeEnum.SUCCESS, null);

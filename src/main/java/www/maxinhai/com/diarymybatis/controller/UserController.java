@@ -1,6 +1,8 @@
 package www.maxinhai.com.diarymybatis.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import io.lettuce.core.RedisConnectionException;
 import io.lettuce.core.dynamic.annotation.Param;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -11,12 +13,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import www.maxinhai.com.diarymybatis.config.annotation.LoginRequired;
 import www.maxinhai.com.diarymybatis.entity.LoginInfo;
 import www.maxinhai.com.diarymybatis.entity.User;
 import www.maxinhai.com.diarymybatis.util.*;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.*;
 
 @Api(tags = "用户管理相关接口", value = "用户管理相关接口")
@@ -49,6 +52,7 @@ public class UserController extends AbstractController {
             @ApiImplicitParam(dataType = "String",name = "username", value = "username",required = true),
             @ApiImplicitParam(dataType = "String",name = "password", value = "password",required = true)
     })
+    @LoginRequired
     @PostMapping(value = "registered")
     public BaseResponse registered(@RequestBody User user) throws Exception {
         int result = userService.addUser(user);
@@ -65,31 +69,38 @@ public class UserController extends AbstractController {
             @ApiImplicitParam(dataType = "String",name = "password", value = "password",required = true)
     })
     @Transactional
-    @GetMapping(value = "login")
-    public BaseResponse login(@Param(value = "username") String username, @Param(value = "password") String password,
-                              HttpServletRequest request, HttpServletResponse response) throws Exception {
-        AssertUtils.assertTrue(EmptyUtils.isEmpty(username), "必要参数缺失!");
-        AssertUtils.assertTrue(EmptyUtils.isEmpty(password), "必要参数缺失!");
+    @LoginRequired
+    @RequestMapping(value = "login", method = RequestMethod.POST)
+    public BaseResponse login(@RequestBody User user, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        AssertUtils.assertTrue(EmptyUtils.isEmpty(user.getUsername()), "必要参数缺失!");
+        AssertUtils.assertTrue(EmptyUtils.isEmpty(user.getPassword()), "必要参数缺失!");
         Map<String, Object> params = new HashMap<>();
-        params.put("username", username);
-        params.put("password", password);
-        User user = userService.findOneByCondition(params);
-        AssertUtils.assertTrue(EmptyUtils.isEmpty(user), "账户不存在!");
+        params.put("username", user.getUsername());
+        params.put("password", user.getPassword());
+        User findResult = userService.findOneByCondition(params);
+        AssertUtils.assertTrue(EmptyUtils.isEmpty(findResult), "账户不存在!");
         //添加session会话
-        String token = UUID.randomUUID().toString();
-        redisUtils.setRedisTemplate(redisTemplate);
-        redisUtils.set(redis_user_key + ":" + token, user);
-        redisUtils.expire("USER_SESSION_KEY:" + token, 60 * 60);
+        String token = null;
+        try {
+            token = UUID.randomUUID().toString();
+            System.out.println("token:" + token);
+            redisUtils.setRedisTemplate(redisTemplate);
+            redisUtils.set(redis_user_key + ":" + token, findResult);
+            redisUtils.expire("USER_SESSION_KEY:" + token, 60 * 60);
+        } catch (RedisConnectionException e) {
+            AssertUtils.assertTrue(true, "redis连接异常!请联系管理员!");
+        }
         //添加登录信息
         LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setUser_id(user.getUser_id());
+        loginInfo.setUser_id(findResult.getUser_id());
         Date nowTime = new Date();
         loginInfo.setCreateTime(nowTime);
         loginInfo.setDescription(user.getUsername() + "于" + DateUtils.getFormatDateTime(nowTime) + "登陆账户!");
         loginInfoService.addLoginInfo(loginInfo);
         //添加客户端cookie
         CookieUtils.setCookie(request, response, "token", token);
-        CookieUtils.setCookie(request, response, "userinfo", JSONObject.toJSONString(user));
+        String encodeCookie = URLEncoder.encode(JSON.toJSONString(findResult), "utf-8");
+        CookieUtils.setCookie(request, response, "userinfo", encodeCookie);
         ResponseData<Object> responseData = ResponseData.out(CodeEnum.SUCCESS, null);
         return responseData;
     }
@@ -118,8 +129,8 @@ public class UserController extends AbstractController {
 
     @ApiOperation(value = "删除用户信息", notes = "removeUser", httpMethod = "POST")
     @ApiImplicitParam(dataType = "Long",name = "id", value = "id",required = true)
-    @PostMapping(value = "removeUser")
-    public BaseResponse removeUser(@RequestParam("id") Long id) throws Exception {
+    @PostMapping(value = "removeUser/{id}")
+    public BaseResponse removeUser(@PathVariable("id") Long id) throws Exception {
         int result = userService.delUser(id);
         if(result == 1) {
             return ResponseData.out(CodeEnum.SUCCESS, null);
@@ -132,8 +143,8 @@ public class UserController extends AbstractController {
     @ApiOperation(value = "修改用户信息", notes = "modifyUser", httpMethod = "POST")
     @ApiImplicitParam(dataType = "User",name = "user", value = "user",required = true)
     @PostMapping(value = "modifyUser")
-    public BaseResponse modifyUser(@RequestBody User user) throws Exception {
-        int result = userService.modifyUser(user);
+    public BaseResponse modifyUser(@RequestBody Map<String, Object> params) throws Exception {
+        int result = userService.modifyUser(params);
         if(result == 1) {
             return ResponseData.out(CodeEnum.SUCCESS, null);
         }

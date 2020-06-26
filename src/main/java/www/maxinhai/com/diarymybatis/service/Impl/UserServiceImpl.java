@@ -24,7 +24,7 @@ public class UserServiceImpl extends AbstractService implements UserService {
         AssertUtils.assertFalse(null != user.getUsername(), "用户名不为空!");
         AssertUtils.assertFalse(null != user.getPassword(), "密码不为空!");
         User findResult = userMapper.findOneByCondition(user);
-        AssertUtils.assertFalse(EmptyUtils.isEmpty(findResult), "用户名" + user.getUsername() + "已存在!");
+        AssertUtils.assertTrue(findResult != null, "用户名" + user.getUsername() + "已存在!");
         user.setCreateTime(new Date());
         return userMapper.addUser(user);
     }
@@ -36,12 +36,23 @@ public class UserServiceImpl extends AbstractService implements UserService {
     }
 
     @Override
-    public int modifyUser(User user) throws Exception {
-        AssertUtils.assertFalse(null != user.getUser_id(), "id不为空!");
+    public int modifyUser(Map<String, Object> params) throws Exception {
+        AssertUtils.assertFalse(null != params.get("user_id"), "id不为空!");
+        User user = new User();
+        user.setUser_id(Long.valueOf(String.valueOf(params.get("user_id"))));
         User findResult = userMapper.findOneByCondition(user);
-        AssertUtils.assertTrue(EmptyUtils.isEmpty(findResult), "修改数据不存在!");
-        user.setModifyTime(new Date());
-        return userMapper.updateUserById(user);
+        AssertUtils.assertTrue(findResult == null, "修改数据不存在!");
+        findResult.setModifyTime(new Date());
+        if(null != params.get("username")) {
+            findResult.setUsername(String.valueOf(params.get("username")));
+        }
+        if(null != params.get("password")) {
+            findResult.setPassword(String.valueOf(params.get("password")));
+        }
+        if(null != params.get("description")) {
+            findResult.setDescription(String.valueOf(params.get("description")));
+        }
+        return userMapper.updateUserById(findResult);
     }
 
     @Override

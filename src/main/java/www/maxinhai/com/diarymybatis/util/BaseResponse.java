@@ -13,6 +13,7 @@ public class BaseResponse {
      * 响应消息
      */
     private String msg;
+
     protected BaseResponse() {}
     BaseResponse(CodeEnum code) {
         this.code = code.getCode();
@@ -22,6 +23,7 @@ public class BaseResponse {
     public static BaseResponse out(CodeEnum code) {
         return new BaseResponse(code);
     }
+
     public int getCode() {
         return code;
     }

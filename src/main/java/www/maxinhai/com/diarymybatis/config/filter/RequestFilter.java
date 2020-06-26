@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = "/", filterName = "requestFilter")
+@WebFilter(urlPatterns = "/*", filterName = "requestFilter")
 public class RequestFilter implements Filter {
 
     private final static Logger logger = LoggerFactory.getLogger(RequestFilter.class);
@@ -49,11 +49,12 @@ public class RequestFilter implements Filter {
 
         //映射请求地址
         String path = httpRequest.getRequestURI();
+        logger.info("过滤器: 请求地址: {}", path);
         if(path.indexOf("/api/") < 0) {
             path = "/api" + path;
-            httpRequest.getRequestDispatcher(path).forward(servletRequest, httpResponse);
+            httpRequest.getRequestDispatcher(path).forward(servletRequest, servletResponse);
         } else {
-            filterChain.doFilter(servletRequest, httpResponse);
+            filterChain.doFilter(servletRequest, servletResponse);
         }
     }
 

@@ -8,12 +8,12 @@ public class BusinessException extends RuntimeException {
     /**
      * 错误码
      */
-    protected String errorCode;
+    private String errorCode;
 
     /**
      * 错误信息
      */
-    protected String errorMessage;
+    private String errorMessage;
 
 
     public String getErrorCode() {
@@ -37,4 +37,11 @@ public class BusinessException extends RuntimeException {
         this.errorMessage = errorMessage;
     }
 
+    @Override
+    public String toString() {
+        return "BusinessException{" +
+                "errorCode='" + errorCode + '\'' +
+                ", errorMessage='" + errorMessage + '\'' +
+                '}';
+    }
 }
