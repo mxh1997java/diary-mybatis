@@ -1,9 +1,7 @@
 package www.maxinhai.com.diarymybatis.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import io.lettuce.core.RedisConnectionException;
-import io.lettuce.core.dynamic.annotation.Param;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -17,10 +15,14 @@ import www.maxinhai.com.diarymybatis.config.annotation.LoginRequired;
 import www.maxinhai.com.diarymybatis.entity.LoginInfo;
 import www.maxinhai.com.diarymybatis.entity.User;
 import www.maxinhai.com.diarymybatis.util.*;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Api(tags = "用户管理相关接口", value = "用户管理相关接口")
 @RequestMapping(value = "api/user/")

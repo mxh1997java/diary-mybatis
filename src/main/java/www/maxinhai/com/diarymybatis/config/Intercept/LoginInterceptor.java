@@ -66,9 +66,6 @@ public class LoginInterceptor implements HandlerInterceptor {
                 logger.info("调用路径: {} 不需要登陆", request.getRequestURI());
                 return true;
             }
-        } else {
-            logger.info("调用路径: {} 不需要登陆", request.getRequestURI());
-            return true;
         }
 
         AssertUtils.assertTrue(EmptyUtils.isEmpty(request.getHeader("token")), "token不存在!");
@@ -79,7 +76,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             logger.info("登录信息不存在!请重新登录!");
             return false;
         }
-        return false;
+        return true;
     }
 
 
