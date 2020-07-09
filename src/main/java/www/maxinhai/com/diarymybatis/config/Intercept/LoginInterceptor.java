@@ -75,6 +75,10 @@ public class LoginInterceptor implements HandlerInterceptor {
         if(EmptyUtils.isEmpty(userInfo)) {
             logger.info("登录信息不存在!请重新登录!");
             return false;
+            //throw new RuntimeException("登录信息不存在!请重新登录!");
+        } else {
+            //每次请求通过验证，延长token过期时间
+            redisUtils.expire(redis_user_key + ":" + token, 60 * 60);
         }
         return true;
     }
