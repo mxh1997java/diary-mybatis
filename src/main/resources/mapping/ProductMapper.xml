@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.maxinhai.com.diarymybatis.mapper.ProductMapper">
+
+    <!--映射结果-->
+    <resultMap id="BaseResultMap" type="www.maxinhai.com.diarymybatis.entity.Product">
+        <id column="productId" property="productId" jdbcType="INTEGER"/>
+        <result column="productName" property="productName" jdbcType="VARCHAR"/>
+        <result column="productPrice" property="productPrice" jdbcType="INTEGER"/>
+        <result column="productNum" property="productNum" jdbcType="INTEGER"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="DATE"/>
+        <result column="modifyTime" property="modifyTime" jdbcType="DATE"/>
+    </resultMap>
+
+    <!--共用查询字段-->
+    <sql id="BaseColumnList">
+        productId,
+        productName,
+        productPrice,
+        productNum,
+        description,
+        createTime,
+        modifyTime
+    </sql>
+
+    <!--自增id添加产品信息-->
+    <insert id="addProduct" parameterType="www.maxinhai.com.diarymybatis.entity.Product"
+            useGeneratedKeys="true" keyProperty="id"
+    >
+        insert into diary_product (productName, productPrice, productNum, description, createTime, modifyTime)
+        values (#{productName}, #{productPrice}, #{productNum}, #{description}, #{createTime}, #{modifyTime})
+    </insert>
+
+
+    <!--根据条件查询产品数据-->
+    <select id="findOneByCondition" parameterType="java.util.Map" resultType="www.maxinhai.com.diarymybatis.entity.Product">
+        select
+        <include refid="BaseColumnList"></include>
+        from diary_product
+        <where>
+            <if test="productId != null">
+                and productId=#{productId}
+            </if>
+            <if test="productName != null">
+                and productName = productName
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

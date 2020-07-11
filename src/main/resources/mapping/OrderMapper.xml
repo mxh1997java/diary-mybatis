@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.maxinhai.com.diarymybatis.mapper.OrderMapper">
+
+    <!--映射结果-->
+    <resultMap id="BaseResultMap" type="www.maxinhai.com.diarymybatis.entity.LoginInfo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="user_id" jdbcType="INTEGER"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="DATE"/>
+        <result column="modifyTime" property="modifyTime" jdbcType="DATE"/>
+    </resultMap>
+
+    <!--共用查询字段-->
+    <sql id="BaseColumnList">
+        orderId,
+        orderNo,
+        productId,
+        productName,
+        userId,
+        username,
+        address,
+        orderState,
+        createTime,
+        modifyTime
+    </sql>
+
+    <!--自增id-->
+    <insert id="addOrder" parameterType="www.maxinhai.com.diarymybatis.entity.Order"
+            useGeneratedKeys="true" keyProperty="orderId"
+    >
+        insert into diary_order (user_id, createTime, description)
+        values (#{user_id}, #{createTime}, #{description})
+    </insert>
+
+    <!--批量导入订单信息-->
+    <insert id="addOrderBatch" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="orderId">
+          insert into diary_order()
+          values 
+          <foreach collection="orderList" item="item" index="index" separator=",">
+              (
+              #{item.orderNo},
+              #{item.productId},
+              #{item.productName},
+              #{item.userId},
+              #{item.username},
+              #{item.address},
+              #{item.orderState},
+              #{item.createTime},
+              )
+          </foreach>
+    </insert>
+
+</mapper>

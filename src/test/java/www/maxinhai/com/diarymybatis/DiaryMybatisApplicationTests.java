@@ -11,17 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.test.context.junit4.SpringRunner;
-import www.maxinhai.com.diarymybatis.config.RedissonConfig;
+import www.maxinhai.com.diarymybatis.config.RedissonClientConfig;
+import www.maxinhai.com.diarymybatis.config.rabbitmq.Producer;
 import www.maxinhai.com.diarymybatis.entity.User;
 import www.maxinhai.com.diarymybatis.util.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 
@@ -244,7 +242,7 @@ public class DiaryMybatisApplicationTests {
     }
 
     @Autowired
-    RedissonConfig redissonConfig;
+    RedissonClientConfig redissonClientConfig;
 
     /**
      * 测试redisson客户端分布式锁
@@ -253,7 +251,7 @@ public class DiaryMybatisApplicationTests {
     public void lockTest1() {
         String LOCK_ID = "HelloWorld";
         CountDownLatch countDownLatch = new CountDownLatch(10);
-        RedissonClient client = redissonConfig.getClient();
+        RedissonClient client = redissonClientConfig.getClient();
 
         for(int i=0; i<10; i++) {
             new Thread(()->{
@@ -293,6 +291,37 @@ public class DiaryMybatisApplicationTests {
     @Test
     public void readProperties() {
         System.out.println(redis_user_key);
+    }
+
+    @Autowired
+    private Producer producer;
+
+
+    /**
+     * 功能描述: 消息队列测试
+     * @Param: []
+     * @Return: void
+     * @Author: 15735400536
+     * @Date: 2020/7/11 20:58
+     */
+    @Test
+    public void testRabbitMQ() {
+        ExecutorService threadPool = ThreadPoolUtils.getThreadPool();
+        CountDownLatch countDownLatch = new CountDownLatch(10);
+        for(int i=0; i<10; i++) {
+            threadPool.submit(new Runnable() {
+                @Override
+                public void run() {
+                    producer.send("message: " + UUID.randomUUID());
+                }
+            });
+            countDownLatch.countDown();
+        }
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

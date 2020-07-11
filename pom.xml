@@ -163,6 +163,12 @@
             <artifactId>redisson</artifactId>
             <version>3.8.2</version>
         </dependency>
+
+        <!--消息对立-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
