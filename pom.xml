@@ -164,7 +164,7 @@
             <version>3.8.2</version>
         </dependency>
 
-        <!--消息对立-->
+        <!--消息队列-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>

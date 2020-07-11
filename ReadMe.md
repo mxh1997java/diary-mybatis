@@ -12,3 +12,6 @@
 * [登陆拦截器机制及实现](https://blog.csdn.net/zxd1435513775/article/details/86555130)
 * [Redis缓存穿透、缓存雪崩及解决方案](https://blog.csdn.net/wx1528159409/article/details/88357728,)
 * [布隆过滤器讲解](https://blog.csdn.net/yonggeit/article/details/103033869)
+* [SpringBoot定时任务]()
+* [SpringBoot消息队列]()
+* [Redis分布式锁]()

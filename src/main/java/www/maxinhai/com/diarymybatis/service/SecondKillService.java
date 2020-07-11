@@ -19,4 +19,6 @@ public interface SecondKillService {
 
     int createOrder(Order order) throws Exception;
 
+    int scheduledTasks() throws Exception;
+
 }

@@ -203,4 +203,16 @@ public class SecondKillServiceImpl implements SecondKillService {
         return orderMapper.addOrderBatch(orderList);
     }
 
+
+    /**
+     * 功能描述: 定时任务，维护redis超时未支付的订单，不一定写在这里
+     * @Param: []
+     * @Return: int
+     * @Author: 15735400536
+     * @Date: 2020/7/11 23:53
+     */
+    @Override
+    public int scheduledTasks() throws Exception {
+        return 0;
+    }
 }
