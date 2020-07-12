@@ -4,16 +4,17 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import www.maxinhai.com.diarymybatis.config.annotation.LoginRequired;
+import www.maxinhai.com.diarymybatis.util.AssertUtils;
 import www.maxinhai.com.diarymybatis.util.CookieUtils;
+import www.maxinhai.com.diarymybatis.util.EmptyUtils;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @Api(tags = "测试接口")
+//@CrossOrigin(origins = {"http://localhost:5500", "http://127.0.0.1:5500", "http://localhost:8529", "http://127.0.0.1:8529"})
 @RequestMapping("api/test/")
 @RestController
 public class TestController extends AbstractController{
@@ -44,5 +45,16 @@ public class TestController extends AbstractController{
         CookieUtils.setCookie(request, response, "userinfo", "www.maxinhai.com");
         return getSuccess();
     }
+
+
+    @LoginRequired
+    @RequestMapping(value = "concurrencyTest", method = RequestMethod.POST)
+    public Map<String, Object> concurrencyTest(@RequestBody Map<String, Object> params) throws Exception {
+        AssertUtils.assertTrue(EmptyUtils.isEmpty(params), "params不为空!");
+        String name = params.get("name").toString();
+        String description = params.get("description").toString();
+        return getSuccess(name+description, params);
+    }
+
 
 }

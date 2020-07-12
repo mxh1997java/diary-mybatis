@@ -9,6 +9,8 @@ public interface SecondKillService {
 
     int addProductInfo(Product product) throws Exception;
 
+    Product findOneProductInfo(Map<String, Object> params) throws Exception;
+
     boolean intiProductData(Long productId) throws Exception;
 
     boolean secondKill(Map<String, Object> params) throws Exception;

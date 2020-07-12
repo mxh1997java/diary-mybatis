@@ -1,6 +1,8 @@
 package www.maxinhai.com.diarymybatis;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
 import org.junit.Test;
@@ -14,6 +16,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import www.maxinhai.com.diarymybatis.config.RedissonClientConfig;
 import www.maxinhai.com.diarymybatis.config.rabbitmq.Producer;
+import www.maxinhai.com.diarymybatis.entity.Product;
 import www.maxinhai.com.diarymybatis.entity.User;
 import www.maxinhai.com.diarymybatis.util.*;
 import java.io.IOException;
@@ -322,6 +325,23 @@ public class DiaryMybatisApplicationTests {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+
+    @Test
+    public void objectToJSONObject() {
+        List<Object> objectList = new ArrayList<>();
+        for(int i=0; i<10; i++) {
+            Product product = new Product();
+            product.setProductId(1l);
+            product.setProductName("name" + i);
+            objectList.add(product);
+        }
+        String jsonString = JSONArray.toJSONString(objectList);
+        List<Product> products = JSONObject.parseArray(jsonString, Product.class);
+        products.forEach(item -> {
+            System.out.println(item.toString());
+        });
     }
 
 }

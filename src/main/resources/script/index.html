@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript并发请求脚本</title>
+</head>
+
+<body>
+<script type="application/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script>
+
+    // function crosRequest(name, description) {
+    //     var json = {
+    //         "name": name,
+    //         "description": description
+    //     };
+    //     $.ajax({
+    //         url: 'http://127.0.0.1:8529/test/concurrencyTest',
+    //         type: 'post',
+    //         contentType: 'application/json;charset=utf-8',
+    //         dataType: 'json',
+    //         data: json,
+    //         success: function (res) {
+    //             console.log(res);
+    //         }
+    //     });
+    // }
+
+    var promiseArray = [];
+    for (var i = 0; i < 100; i++) {
+        var promise = new Promise(function (resolve, reject) {
+            function crosRequest(name, description) {
+                var json = {
+                    "name": name,
+                    "description": description
+                };
+                $.ajax({
+                    url: 'http://127.0.0.1:8529/test/concurrencyTest',
+                    type: 'post',
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    data: json,
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+            resolve(crosRequest('name' + i, 'description' + i))
+        });
+        promiseArray.push(promise);
+    }
+
+    // 同时执行p1和p2，并在它们都完成后执行then:
+    Promise.all(promiseArray).then(function (results) {
+        console.log(results); // 获得一个Array: ['P1', 'P2']
+    });
+</script>
+</body>
+
+</html>

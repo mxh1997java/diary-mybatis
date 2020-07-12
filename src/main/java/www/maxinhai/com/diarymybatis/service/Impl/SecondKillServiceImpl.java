@@ -1,5 +1,6 @@
 package www.maxinhai.com.diarymybatis.service.Impl;
 
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import www.maxinhai.com.diarymybatis.service.SecondKillService;
 import www.maxinhai.com.diarymybatis.util.AssertUtils;
 import www.maxinhai.com.diarymybatis.util.DateUtils;
 import www.maxinhai.com.diarymybatis.util.EmptyUtils;
+
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -76,7 +78,13 @@ public class SecondKillServiceImpl implements SecondKillService {
         Integer productNum = product.getProductNum();
         //将商品秒杀数量放入redis
         redisTemplate.opsForValue().set(productName, productNum);
-        redisTemplate.expire(productName, 60*60, TimeUnit.MINUTES);
+        //redisTemplate.expire(productName, 60, TimeUnit.MINUTES);
+
+        //创建过期数据到过期数据池，定时任务会维护过期数据
+        JSONObject expire = new JSONObject();
+        expire.put("key", productName);
+        expire.put("expireTime", DateUtils.calculationDate(new Date(), Calendar.HOUR, 1));
+        redisTemplate.opsForList().rightPush("expire_key_pool", expire);
         return true;
     }
 
@@ -214,5 +222,10 @@ public class SecondKillServiceImpl implements SecondKillService {
     @Override
     public int scheduledTasks() throws Exception {
         return 0;
+    }
+
+    @Override
+    public Product findOneProductInfo(Map<String, Object> params) throws Exception {
+        return null;
     }
 }

@@ -52,7 +52,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         //判断是否为ResourceHttpRequestHandler
         if(!(handler instanceof HandlerMethod)) {
-            logger.warn("当前操作handler不为HandlerMethod=" + handler.getClass().getName() + ",request=" + request.getQueryString());
+            logger.warn("HandlerMethod=" + handler.getClass().getName() + ",request=" + request.getQueryString());
             return true;
         }
 
