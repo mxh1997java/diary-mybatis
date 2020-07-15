@@ -6,6 +6,13 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+/**
+ * 功能描述: 跨域配置
+ * @Param:
+ * @Return:
+ * @Author: 15735400536
+ * @Date: 2020/7/15 10:34
+ */
 @Configuration
 public class CorsConfig {
 

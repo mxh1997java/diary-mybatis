@@ -1,4 +1,4 @@
-package www.maxinhai.com.diarymybatis.config;
+package www.maxinhai.com.diarymybatis.config.redis;
 
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
@@ -31,7 +31,7 @@ public class RedissonClientConfig {
         Config config = new Config();
         config.setNettyThreads(2);
         config.useSingleServer()
-                .setAddress("redis://" + REDIS_HOST + ":" + REDIS_PORT)
+                .setAddress("redis://127.0.0.1:6379")
                 .setConnectionPoolSize(10)
                 .setConnectionMinimumIdleSize(1)
                 .setRetryAttempts(1)

@@ -45,4 +45,5 @@ public class Consumer {
         log.info("消费者接收消息: " + new String(message.getBody()));
     }
 
+
 }

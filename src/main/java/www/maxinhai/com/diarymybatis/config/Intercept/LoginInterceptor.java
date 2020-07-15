@@ -56,6 +56,12 @@ public class LoginInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        //不拦截swagger页面
+        if(request.getRequestURI().equals("/error")) {
+            throw new RuntimeException("页面路径错误!");
+            //return false;
+        }
+
         //获取请求上的登陆注解
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         LoginRequired annotation = handlerMethod.getMethod().getAnnotation(LoginRequired.class);
@@ -74,8 +80,8 @@ public class LoginInterceptor implements HandlerInterceptor {
         Object userInfo = redisUtils.get(redis_user_key + ":" + token);
         if(EmptyUtils.isEmpty(userInfo)) {
             logger.info("登录信息不存在!请重新登录!");
-            return false;
-            //throw new RuntimeException("登录信息不存在!请重新登录!");
+            //return false;
+            throw new RuntimeException("登录信息不存在!请重新登录!");
         } else {
             //每次请求通过验证，延长token过期时间
             redisUtils.expire(redis_user_key + ":" + token, 60 * 60);

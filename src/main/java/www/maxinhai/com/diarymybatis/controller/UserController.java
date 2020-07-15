@@ -15,7 +15,6 @@ import www.maxinhai.com.diarymybatis.config.annotation.LoginRequired;
 import www.maxinhai.com.diarymybatis.entity.LoginInfo;
 import www.maxinhai.com.diarymybatis.entity.User;
 import www.maxinhai.com.diarymybatis.util.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;

@@ -24,7 +24,8 @@ public class LoginConfig implements WebMvcConfigurer {
                 "/**/*.jpeg",
                 "/*.html",
                 "/**/*.html",
-                "/swagger-resources/**"
+                "/swagger-resources/**",
+                "/swagger-ui.html"
         );
     }
 
@@ -35,7 +36,7 @@ public class LoginConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-
+        registry.addResourceHandler("/swagger-ui.html");
     }
 
     /**

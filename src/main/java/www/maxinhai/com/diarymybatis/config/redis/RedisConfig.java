@@ -1,4 +1,4 @@
-package www.maxinhai.com.diarymybatis.config;
+package www.maxinhai.com.diarymybatis.config.redis;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
