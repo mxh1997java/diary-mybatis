@@ -15,3 +15,5 @@
 * [SpringBoot定时任务]()
 * [SpringBoot消息队列]()
 * [Redis分布式锁]()
+* [Redis key过期监听器](https://www.cnblogs.com/chong-zuo3322/p/13274212.html)
+* [DataWay](https://mp.weixin.qq.com/s/Ri3C0KnJktdSGw0PEiPXJg)

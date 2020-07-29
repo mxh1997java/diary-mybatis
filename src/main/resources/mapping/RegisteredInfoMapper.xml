@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="www.maxinhai.com.diarymybatis.mapper.RegisteredInfoMapper">
+
+    <!--映射结果-->
+    <resultMap id="BaseResultMap" type="www.maxinhai.com.diarymybatis.entity.RegisteredInfo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="registerTime" property="registerTime" jdbcType="DATE"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="DATE"/>
+    </resultMap>
+
+    <!--共用查询字段-->
+    <sql id="BaseColumnList">
+        id,
+        username,
+        registerTime,
+        creator,
+        description,
+        createTime
+    </sql>
+
+    <!--自增id添加用户注册信息-->
+    <insert id="addRegisteredInfo" parameterType="www.maxinhai.com.diarymybatis.entity.RegisteredInfo"
+            useGeneratedKeys="true" keyProperty="id"
+    >
+        insert into diary_registered_info (username, registerTime, creator, description, createTime)
+        values (#{username}, #{registerTime}, #{creator}, #{description}, #{createTime})
+    </insert>
+
+
+    <!--根据条件查询户注册数据-->
+    <select id="findAllByCondition" parameterType="java.util.Map" resultType="www.maxinhai.com.diarymybatis.entity.RegisteredInfo">
+        select
+        <include refid="BaseColumnList"></include>
+        from diary_registered_info
+        <where>
+            <if test="username != null">
+                and username=#{username}
+            </if>
+            <if test="startTime != null">
+                and registerTime &gt;= #{startTime}
+            </if>
+            <if test="endTime != null" >
+                and registerTime &lt;= #{endTime}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

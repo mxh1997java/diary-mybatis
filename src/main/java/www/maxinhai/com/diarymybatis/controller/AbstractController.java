@@ -7,7 +7,6 @@ import www.maxinhai.com.diarymybatis.service.Impl.DiaryServiceImpl;
 import www.maxinhai.com.diarymybatis.service.Impl.LoginInfoServiceImpl;
 import www.maxinhai.com.diarymybatis.service.Impl.UserServiceImpl;
 import www.maxinhai.com.diarymybatis.service.LoginInfoServce;
-
 import java.util.HashMap;
 import java.util.Map;
 

@@ -4,12 +4,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import www.maxinhai.com.diarymybatis.entity.LoginInfo;
+import www.maxinhai.com.diarymybatis.entity.RegisteredInfo;
 import www.maxinhai.com.diarymybatis.entity.User;
 import www.maxinhai.com.diarymybatis.service.AbstractService;
 import www.maxinhai.com.diarymybatis.service.UserService;
 import www.maxinhai.com.diarymybatis.util.AssertUtils;
 import www.maxinhai.com.diarymybatis.util.EmptyUtils;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,8 @@ import java.util.Map;
 @Service
 public class UserServiceImpl extends AbstractService implements UserService {
 
+    //rollbackFor会回滚 noRollbackFor不会回滚
+    @Transactional(rollbackFor=RuntimeException.class, noRollbackFor=Exception.class)
     @Override
     public int addUser(User user) throws Exception {
         AssertUtils.assertFalse(null != user.getUsername(), "用户名不为空!");
@@ -26,7 +29,15 @@ public class UserServiceImpl extends AbstractService implements UserService {
         User findResult = userMapper.findOneByCondition(user);
         AssertUtils.assertTrue(findResult != null, "用户名" + user.getUsername() + "已存在!");
         user.setCreateTime(new Date());
-        return userMapper.addUser(user);
+        RegisteredInfo registeredInfo = new RegisteredInfo();
+        registeredInfo.setCreator("admin");
+        registeredInfo.setRegisterTime(new Date());
+        registeredInfo.setUsername(user.getUsername());
+        int result = registeredInfoMapper.addRegisteredInfo(registeredInfo);
+        AssertUtils.assertTrue(result < 1, "添加用户注册信息出错!");
+        result = userMapper.addUser(user);
+        AssertUtils.assertTrue(result < 1, "创建账户出错!");
+        return result;
     }
 
     @Override
