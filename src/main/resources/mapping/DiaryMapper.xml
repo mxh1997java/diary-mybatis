@@ -177,18 +177,15 @@
 
     <insert id ="batchInsertDiary" parameterType="java.util.List" >
         insert into diary_diary
-        (bach_id, code, type, facevalue,create_user,create_time)
+        (title, content, author_id, author, createTime)
         values
         <foreach collection ="list" item="diary" index= "index" separator =",">
             (
-            #{diary.id},
             #{diary.title},
             #{diary.content},
             #{diary.author_id},
             #{diary.author},
-            #{diary.createTime},
-            #{diary.modifyTime},
-            #{diary.description}
+            #{diary.createTime}
             )
         </foreach >
     </insert >

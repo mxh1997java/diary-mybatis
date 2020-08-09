@@ -7,6 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import www.maxinhai.com.diarymybatis.entity.User;
+import javax.annotation.PostConstruct;
 
 @EnableHasor()
 @EnableHasorWeb()
@@ -20,6 +22,24 @@ public class DiaryMybatisApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DiaryMybatisApplication.class, args);
+    }
+
+    /**
+     * 功能描述: 在spring容器初始化的时候执行该方法
+     * @Param: []
+     * @Return: void
+     * @Author: 15735400536
+     * @Date: 2020/8/9 15:46
+     */
+    @PostConstruct
+    public void init() {
+        System.out.println("初始化admin用户");
+        User user = new User();
+        user.setUsername("admin");
+        user.setPassword("admin");
+        user.setUser_id(1l);
+        user.setDescription("this is admin");
+        user.setName("admin");
     }
 
 }
